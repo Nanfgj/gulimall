@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: gulimall-product
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: c2ae8b03-65f0-4da5-8ce2-e8b909e114a4
