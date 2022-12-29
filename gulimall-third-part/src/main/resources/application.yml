@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: gulimall-third-part
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+#    alicloud:
+#      access-key: xxxxxxxxxxxx
+#      secret-key: xxxxxxxxxxxx
+#      oss:
+#        bucket: nfgj-gulimall
+#        endpoint: oss-cn-shanghai.aliyuncs.com
+
+
+
+server:
+  port: 30000
