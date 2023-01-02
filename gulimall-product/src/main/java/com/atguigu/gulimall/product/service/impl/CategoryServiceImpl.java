@@ -1,5 +1,7 @@
 package com.atguigu.gulimall.product.service.impl;
 
+import com.atguigu.gulimall.product.service.CategoryBrandRelationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
@@ -16,10 +18,14 @@ import com.atguigu.common.utils.Query;
 import com.atguigu.gulimall.product.dao.CategoryDao;
 import com.atguigu.gulimall.product.entity.CategoryEntity;
 import com.atguigu.gulimall.product.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
+
+    @Autowired
+    private CategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -63,6 +69,48 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
         return ans;
     }
+
+    //2.根据CatelogId，查询出完整三级分类
+    @Override
+    public Long[] findCatelogPath(Long catelogId) {
+
+        List<Long> paths = new ArrayList<>();
+        List<Long> parentPath = findParentPath(catelogId,paths);
+
+        Collections.reverse(parentPath);
+
+        return parentPath.toArray(new Long[parentPath.size()]);
+
+
+        //3级分类id catelogId  --nanfgj
+//        CategoryEntity categoryThree = this.baseMapper.selectById(catelogId);
+//
+//        Long catIdTwo = categoryThree.getParentCid();
+//        CategoryEntity categoryTwo = this.baseMapper.selectById(catIdTwo);
+//        Long catIdOne = categoryTwo.getParentCid();
+//        return new Long[]{catIdOne,catIdTwo,catelogId};
+    }
+
+    //级联更新所有关联的数据
+    @Transactional
+    @Override
+    public void updateCascade(CategoryEntity category) {
+        this.updateById(category);
+        categoryBrandRelationService.updateCategory(category.getCatId(),category.getName());
+
+    }
+
+    //递归收集节点
+    private List<Long> findParentPath(Long catelogId, List<Long> paths) {
+        //收集当前节点
+        paths.add(catelogId);
+        CategoryEntity category = this.getById(catelogId);
+        if (category.getParentCid() != 0){
+            findParentPath(category.getParentCid(),paths);
+        }
+        return paths;
+    }
+
 
     //删除分类菜单
     @Override

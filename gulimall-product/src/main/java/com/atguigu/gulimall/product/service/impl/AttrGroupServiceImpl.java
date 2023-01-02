@@ -1,5 +1,7 @@
 package com.atguigu.gulimall.product.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -24,6 +26,40 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
         );
 
         return new PageUtils(page);
+    }
+
+    /**
+     *
+     * @param params 前端分页数据
+     * @param catelogId 三级id
+     * @return
+     */
+    @Override
+    public PageUtils queryPage(Map<String, Object> params, Integer catelogId) {
+        //获取检索关键字
+        String key = (String) params.get("key");
+        LambdaQueryWrapper<AttrGroupEntity> lqw = new LambdaQueryWrapper<>();
+
+        //模糊查询关键字
+        if (!StringUtils.isEmpty(key)){
+            lqw.and((obj)->{
+                obj.like(AttrGroupEntity::getAttrGroupName,key);
+            });
+        }
+        //catelogId == 0  查询全部列表
+        if (catelogId == 0){
+            IPage<AttrGroupEntity> page = this.page(
+                    new Query<AttrGroupEntity>().getPage(params),
+                    lqw
+            );
+            return new PageUtils(page);
+        }else {
+            lqw.eq(AttrGroupEntity::getCatelogId,catelogId);
+            IPage<AttrGroupEntity> page = this.page(
+                    new Query<AttrGroupEntity>().getPage(params),
+                    lqw);
+            return new PageUtils(page);
+        }
     }
 
 }

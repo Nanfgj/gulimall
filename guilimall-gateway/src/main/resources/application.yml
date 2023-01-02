@@ -10,11 +10,11 @@ spring:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
 
         - id: third_party_route
-          uri: lb://gulimall-third-part
+          uri: lb://gulimall-third-party
           predicates:
-            - Path=/api/thirdpart/**
+            - Path=/api/thirdparty/**
           filters:
-            - RewritePath= /api/thirdpart/(?<segment>.*),/$\{segment}
+            - RewritePath= /api/thirdparty/(?<segment>.*),/$\{segment}
 
         - id: admin_route
           uri: lb://renren-fast

@@ -24,5 +24,10 @@ public interface CategoryService extends IService<CategoryEntity> {
     //删除分类菜单
     void removeMenuByIds(List<Long> asList);
 
+    //根据CatelogId，查询出完整三级分类
+    Long[] findCatelogPath(Long catelogId);
+
+    //级联更新
+    void updateCascade(CategoryEntity category);
 }
 
