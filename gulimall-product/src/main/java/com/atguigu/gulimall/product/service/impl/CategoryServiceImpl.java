@@ -97,7 +97,6 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     public void updateCascade(CategoryEntity category) {
         this.updateById(category);
         categoryBrandRelationService.updateCategory(category.getCatId(),category.getName());
-
     }
 
     //递归收集节点
@@ -140,5 +139,6 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
         return ans;
     }
+
 
 }
