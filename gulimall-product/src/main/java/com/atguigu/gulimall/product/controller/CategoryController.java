@@ -3,27 +3,27 @@ package com.atguigu.gulimall.product.controller;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import com.atguigu.gulimall.product.entity.CategoryEntity;
 import com.atguigu.gulimall.product.service.CategoryService;
 import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.R;
 
+import javax.validation.Valid;
 
 
 /**
  * 商品三级分类
  *
- * @author changlu
- * @email 939974883@qq.com
- * @date 2022-11-05 16:20:08
+ * @author leifengyang
+ * @email leifengyang@gmail.com
+ * @date 2019-10-01 22:50:32
  */
 @RestController
 @RequestMapping("product/category")
@@ -32,14 +32,15 @@ public class CategoryController {
     private CategoryService categoryService;
 
     /**
-     * 1.查出分类的树形列表
+     * 查出所有分类以及子分类，以树形结构组装起来
      */
     @RequestMapping("/list/tree")
     public R list(){
 
-        List<CategoryEntity> categoryEntityList =  categoryService.listWishTree();
+        List<CategoryEntity> entities = categoryService.listWithTree();
 
-        return R.ok().put("data", categoryEntityList);
+
+        return R.ok().put("data", entities);
     }
 
 
@@ -65,10 +66,8 @@ public class CategoryController {
         return R.ok();
     }
 
-    /**
-     * 修改
-     */
     @RequestMapping("/update/sort")
+    //@RequiresPermissions("product:category:update")
     public R updateSort(@RequestBody CategoryEntity[] category){
         categoryService.updateBatchById(Arrays.asList(category));
         return R.ok();
@@ -80,21 +79,23 @@ public class CategoryController {
     @RequestMapping("/update")
     //@RequiresPermissions("product:category:update")
     public R update(@RequestBody CategoryEntity category){
-        //级联更新
 		categoryService.updateCascade(category);
-
         return R.ok();
     }
 
+
     /**
      * 删除
+     * @RequestBody:获取请求体，必须发送POST请求
+     * SpringMVC自动将请求体的数据（json），转为对应的对象
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:category:delete")
     public R delete(@RequestBody Long[] catIds){
-//		categoryService.removeByIds(Arrays.asList(catIds));
 
-        //删除分类菜单
+
+		//categoryService.removeByIds(Arrays.asList(catIds));
+
         categoryService.removeMenuByIds(Arrays.asList(catIds));
 
         return R.ok();

@@ -9,15 +9,15 @@ import java.util.Map;
 /**
  * 品牌
  *
- * @author changlu
- * @email 939974883@qq.com
- * @date 2022-11-05 16:20:08
+ * @author leifengyang
+ * @email leifengyang@gmail.com
+ * @date 2019-10-01 21:08:49
  */
 public interface BrandService extends IService<BrandEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    //修改品牌名称的同时，更新关联表中的品牌名称
     void updateDetail(BrandEntity brand);
+
 }
 

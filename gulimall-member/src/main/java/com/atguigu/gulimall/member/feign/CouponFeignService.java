@@ -5,11 +5,12 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * @author nanfgj
- * @create 2022-12-27 15:26
+ * 这是一个声明式的远程调用
  */
 @FeignClient("gulimall-coupon")
 public interface CouponFeignService {
+
     @RequestMapping("/coupon/coupon/member/list")
-    public R memberCoupons();
+    public R membercoupons();
+
 }

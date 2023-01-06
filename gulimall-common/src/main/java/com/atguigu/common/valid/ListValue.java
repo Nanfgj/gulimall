@@ -2,23 +2,24 @@ package com.atguigu.common.valid;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-/**
- * @author nanfgj
- * @create 2023-01-02 15:36
- * 自定义校验注解
- */
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.ElementType.TYPE_USE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 @Documented
-@Constraint(validatedBy = {ListValueConstraintValidator.class})  //关联自定义校验器
-@Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.PARAMETER, ElementType.TYPE_USE})
-@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = { ListValueConstraintValidator.class })
+@Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
+@Retention(RUNTIME)
 public @interface ListValue {
     String message() default "{com.atguigu.common.valid.ListValue.message}";
 
-    Class<?>[] groups() default {};
+    Class<?>[] groups() default { };
 
-    Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default { };
 
-    int[] value() default {};
+    int[] vals() default { };
 }

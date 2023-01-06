@@ -4,9 +4,10 @@ import com.atguigu.gulimall.product.service.CategoryBrandRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -24,8 +25,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
 
+//    @Autowired
+//    CategoryDao categoryDao;
+
     @Autowired
-    private CategoryBrandRelationService categoryBrandRelationService;
+    CategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -37,61 +41,53 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return new PageUtils(page);
     }
 
-     //1.查出分类的树形列表
     @Override
-    public List<CategoryEntity> listWishTree() {
+    public List<CategoryEntity> listWithTree() {
+        //1、查出所有分类
+        List<CategoryEntity> entities = baseMapper.selectList(null);
 
-        List<CategoryEntity> categoryEntityList = this.baseMapper.selectList(null);
+        //2、组装成父子的树形结构
 
-        //找出一级分类
-//        List<CategoryEntity> oneList = new ArrayList<>();
-//        for (CategoryEntity categoryEntity : categoryEntityList) {
-//            if (categoryEntity.getParentCid() == 0){
-//                oneList.add(categoryEntity);
-//            }
-//        }
-        //找出其他子id...
-
-        //stream流方式：
-        //2、组装成父子的树型结构
-        List<CategoryEntity> ans = categoryEntityList.stream()
-                .filter((menu) -> menu.getParentCid() == 0)
-                .map((menu) -> {
-                    menu.setChildren(getChildren(menu, categoryEntityList));
-                    return menu;
-                })
-                .sorted((menu1, menu2) -> {
-                    if (menu1.getSort() == null || menu2.getSort() == null) return 0;
-                    return menu1.getSort() - menu2.getSort();
-                })
-                .collect(Collectors.toList());
+        //2.1）、找到所有的一级分类
+        List<CategoryEntity> level1Menus = entities.stream().filter(categoryEntity ->
+             categoryEntity.getParentCid() == 0
+        ).map((menu)->{
+            menu.setChildren(getChildrens(menu,entities));
+            return menu;
+        }).sorted((menu1,menu2)->{
+            return (menu1.getSort()==null?0:menu1.getSort()) - (menu2.getSort()==null?0:menu2.getSort());
+        }).collect(Collectors.toList());
 
 
-        return ans;
+
+
+        return level1Menus;
     }
 
-    //2.根据CatelogId，查询出完整三级分类
+    @Override
+    public void removeMenuByIds(List<Long> asList) {
+        //TODO  1、检查当前删除的菜单，是否被别的地方引用
+
+        //逻辑删除
+        baseMapper.deleteBatchIds(asList);
+    }
+
+    //[2,25,225]
     @Override
     public Long[] findCatelogPath(Long catelogId) {
-
         List<Long> paths = new ArrayList<>();
-        List<Long> parentPath = findParentPath(catelogId,paths);
+        List<Long> parentPath = findParentPath(catelogId, paths);
 
         Collections.reverse(parentPath);
 
+
         return parentPath.toArray(new Long[parentPath.size()]);
-
-
-        //3级分类id catelogId  --nanfgj
-//        CategoryEntity categoryThree = this.baseMapper.selectById(catelogId);
-//
-//        Long catIdTwo = categoryThree.getParentCid();
-//        CategoryEntity categoryTwo = this.baseMapper.selectById(catIdTwo);
-//        Long catIdOne = categoryTwo.getParentCid();
-//        return new Long[]{catIdOne,catIdTwo,catelogId};
     }
 
-    //级联更新所有关联的数据
+    /**
+     * 级联更新所有关联的数据
+     * @param category
+     */
     @Transactional
     @Override
     public void updateCascade(CategoryEntity category) {
@@ -99,46 +95,36 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         categoryBrandRelationService.updateCategory(category.getCatId(),category.getName());
     }
 
-    //递归收集节点
-    private List<Long> findParentPath(Long catelogId, List<Long> paths) {
-        //收集当前节点
+    //225,25,2
+    private List<Long> findParentPath(Long catelogId,List<Long> paths){
+        //1、收集当前节点id
         paths.add(catelogId);
-        CategoryEntity category = this.getById(catelogId);
-        if (category.getParentCid() != 0){
-            findParentPath(category.getParentCid(),paths);
+        CategoryEntity byId = this.getById(catelogId);
+        if(byId.getParentCid()!=0){
+            findParentPath(byId.getParentCid(),paths);
         }
         return paths;
+
     }
 
 
-    //删除分类菜单
-    @Override
-    public void removeMenuByIds(List<Long> asList) {
-        this.baseMapper.deleteBatchIds(asList);
+    //递归查找所有菜单的子菜单
+    private List<CategoryEntity> getChildrens(CategoryEntity root,List<CategoryEntity> all){
+
+        List<CategoryEntity> children = all.stream().filter(categoryEntity -> {
+            return categoryEntity.getParentCid() == root.getCatId();
+        }).map(categoryEntity -> {
+            //1、找到子菜单
+            categoryEntity.setChildren(getChildrens(categoryEntity,all));
+            return categoryEntity;
+        }).sorted((menu1,menu2)->{
+            //2、菜单的排序
+            return (menu1.getSort()==null?0:menu1.getSort()) - (menu2.getSort()==null?0:menu2.getSort());
+        }).collect(Collectors.toList());
+
+        return children;
     }
 
-
-    /**
-     * 递归处理获取子分类
-     * @param parent 父分类
-     * @param all 所有分类
-     * @return 已经获取到子分类的分类
-     */
-    public List<CategoryEntity> getChildren(CategoryEntity parent, List<CategoryEntity> all) {
-        List<CategoryEntity> ans = all.stream()
-                .filter((menu) -> menu.getParentCid().equals(parent.getCatId())) //Long类型比较需要进行equals
-                .map((menu) -> {
-                    menu.setChildren(getChildren(menu, all));
-                    return menu;
-                })
-                .sorted((menu1, menu2) -> {
-                    if (menu1.getSort() == null || menu2.getSort() == null) return 0;
-                    return menu1.getSort() - menu2.getSort();
-                })
-                .collect(Collectors.toList());
-
-        return ans;
-    }
 
 
 }

@@ -21,9 +21,9 @@ import com.atguigu.common.utils.R;
 /**
  * 会员
  *
- * @author changlu
- * @email 939974883@qq.com
- * @date 2022-11-05 17:57:31
+ * @author leifengyang
+ * @email leifengyang@gmail.com
+ * @date 2019-10-08 09:47:05
  */
 @RestController
 @RequestMapping("member/member")
@@ -32,18 +32,17 @@ public class MemberController {
     private MemberService memberService;
 
     @Autowired
-    private CouponFeignService couponFeignService;
+    CouponFeignService couponFeignService;
 
     @RequestMapping("/coupons")
-    public R test() {
-        //当前服务的用户
+    public R test(){
         MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setNickname("长路");
-        //远程调用获取优惠券
-        R membercoupons = couponFeignService.memberCoupons();
-        //响应用户与优惠券信息
-        return R.ok().put("member", memberEntity).put("coupons", membercoupons.get("coupons"));
+        memberEntity.setNickname("张三");
+
+        R membercoupons = couponFeignService.membercoupons();
+        return R.ok().put("member",memberEntity).put("coupons",membercoupons.get("coupons"));
     }
+
 
     /**
      * 列表

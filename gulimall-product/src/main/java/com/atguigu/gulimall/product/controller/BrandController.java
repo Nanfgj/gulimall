@@ -27,9 +27,9 @@ import javax.validation.Valid;
 /**
  * 品牌
  *
- * @author changlu
- * @email 939974883@qq.com
- * @date 2022-11-05 16:20:08
+ * @author leifengyang
+ * @email leifengyang@gmail.com
+ * @date 2019-10-01 22:50:32
  */
 @RestController
 @RequestMapping("product/brand")
@@ -64,22 +64,26 @@ public class BrandController {
      * 保存
      */
     @RequestMapping("/save")
-    //@Valid  开启JSR303校验
-    public R save(@Validated(value = {AddGroup.class}) @RequestBody BrandEntity brand /*, BindingResult result*/){
-        //BindingResult: 获取JSR303检验的数据。
-//        if (result.hasErrors()){
-//            Map<String, String> map = new HashMap<>();
+    //@RequiresPermissions("product:brand:save")
+    public R save(@Validated({AddGroup.class}) @RequestBody BrandEntity brand/*,BindingResult result*/){
+//        if(result.hasErrors()){
+//            Map<String,String> map = new HashMap<>();
+//            //1、获取校验的错误结果
 //            result.getFieldErrors().forEach((item)->{
+//                //FieldError 获取到错误提示
 //                String message = item.getDefaultMessage();
+//                //获取错误的属性的名字
 //                String field = item.getField();
 //                map.put(field,message);
 //            });
+//
 //            return R.error(400,"提交的数据不合法").put("data",map);
 //        }else {
-//            brandService.save(brand);
+//
 //        }
 
         brandService.save(brand);
+
 
         return R.ok();
     }
@@ -89,15 +93,17 @@ public class BrandController {
      */
     @RequestMapping("/update")
     //@RequiresPermissions("product:brand:update")
-    public R update(@Validated(value = {UpdateGroup.class}) @RequestBody BrandEntity brand){
-		//修改品牌名称的同时，更新关联表中的品牌名称
-        brandService.updateDetail(brand);
+    public R update(@Validated(UpdateGroup.class) @RequestBody BrandEntity brand){
+		brandService.updateDetail(brand);
 
         return R.ok();
     }
-
+    /**
+     * 修改状态
+     */
     @RequestMapping("/update/status")
-    public R updateStatus(@Validated(value = {UpdateStatusGroup.class}) @RequestBody BrandEntity brand){
+    //@RequiresPermissions("product:brand:update")
+    public R updateStatus(@Validated(UpdateStatusGroup.class) @RequestBody BrandEntity brand){
         brandService.updateById(brand);
 
         return R.ok();
