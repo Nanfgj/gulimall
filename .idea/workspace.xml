@@ -4,17 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="85828913-044f-47dc-9e8e-a42908206351" name="变更" comment="23.01.02 p75">
-      <change afterPath="$PROJECT_DIR$/gulimall-common/src/main/java/com/atguigu/common/exception/ProductConstant.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gulimall-product/src/main/java/com/atguigu/gulimall/product/vo/AttrRespVo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gulimall-product/src/main/java/com/atguigu/gulimall/product/vo/AttrVo.java" afterDir="false" />
+    <list default="true" id="85828913-044f-47dc-9e8e-a42908206351" name="变更" comment="23.01.03 p80">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gulimall-product/src/main/java/com/atguigu/gulimall/product/controller/AttrController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gulimall-product/src/main/java/com/atguigu/gulimall/product/controller/AttrController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gulimall-product/src/main/java/com/atguigu/gulimall/product/dao/AttrDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/gulimall-product/src/main/java/com/atguigu/gulimall/product/dao/AttrDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gulimall-product/src/main/java/com/atguigu/gulimall/product/service/AttrService.java" beforeDir="false" afterPath="$PROJECT_DIR$/gulimall-product/src/main/java/com/atguigu/gulimall/product/service/AttrService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gulimall-product/src/main/java/com/atguigu/gulimall/product/service/impl/AttrServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/gulimall-product/src/main/java/com/atguigu/gulimall/product/service/impl/AttrServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gulimall-product/src/main/java/com/atguigu/gulimall/product/service/impl/CategoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/gulimall-product/src/main/java/com/atguigu/gulimall/product/service/impl/CategoryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gulimall-product/src/main/resources/mapper/product/AttrDao.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gulimall-product/src/main/resources/mapper/product/AttrDao.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gulimall-third-part/src/main/java/com/atguigu/gulimall/thirdpart/controller/OssController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gulimall-third-part/src/main/java/com/atguigu/gulimall/thirdpart/controller/OssController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +102,13 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.GulimallThirdPartApplication">
+  <component name="RunManager" selected="复合.gulimall">
+    <configuration name="gulimall" type="CompoundRunConfigurationType">
+      <toRun name="GuilimallGatewayApplication" type="SpringBootApplicationConfigurationType" />
+      <toRun name="GulimallProductApplication" type="SpringBootApplicationConfigurationType" />
+      <toRun name="RenrenApplication" type="SpringBootApplicationConfigurationType" />
+      <method v="2" />
+    </configuration>
     <configuration name="GuilimallGatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="guilimall-gateway" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.atguigu.gulimall.gateway.GuilimallGatewayApplication" />
@@ -121,6 +119,7 @@
     <configuration name="GulimallCouponApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="gulimall-coupon" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.atguigu.gulimall.coupon.GulimallCouponApplication" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -140,7 +139,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GulimallProductApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true">
+    <configuration name="GulimallProductApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="gulimall-product" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.atguigu.gulimall.product.GulimallProductApplication" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -151,6 +150,7 @@
     <configuration name="GulimallThirdPartApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="gulimall-third-part" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.atguigu.gulimall.thirdpart.GulimallThirdPartApplication" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -177,11 +177,18 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Spring Boot.GulimallProductApplication" />
-      </list>
-    </recent_temporary>
+    <list>
+      <item itemvalue="Spring Boot.GuilimallGatewayApplication" />
+      <item itemvalue="Spring Boot.GulimallCouponApplication" />
+      <item itemvalue="Spring Boot.GulimallMemberApplication" />
+      <item itemvalue="Spring Boot.GulimallOrderApplication" />
+      <item itemvalue="Spring Boot.GulimallThirdPartApplication" />
+      <item itemvalue="Spring Boot.GulimallWareApplication" />
+      <item itemvalue="Spring Boot.RenrenApplication" />
+      <item itemvalue="Spring Boot.RenrenGenApplication" />
+      <item itemvalue="Spring Boot.GulimallProductApplication" />
+      <item itemvalue="复合.gulimall" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -206,7 +213,9 @@
       <workItem from="1672738781474" duration="435000" />
       <workItem from="1672739241557" duration="1014000" />
       <workItem from="1672752602283" duration="5348000" />
-      <workItem from="1672795128374" duration="3880000" />
+      <workItem from="1672795128374" duration="8723000" />
+      <workItem from="1672881575259" duration="6985000" />
+      <workItem from="1672968202628" duration="973000" />
     </task>
     <task id="LOCAL-00001" summary="项目环境搭建">
       <created>1672043315697</created>
@@ -243,7 +252,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672668209449</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="23.01.03 p80">
+      <created>1672804065493</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1672804065493</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -269,7 +285,8 @@
     <MESSAGE value="22.12.28 p58" />
     <MESSAGE value="22.12.29 p64" />
     <MESSAGE value="23.01.02 p75" />
-    <option name="LAST_COMMIT_MESSAGE" value="23.01.02 p75" />
+    <MESSAGE value="23.01.03 p80" />
+    <option name="LAST_COMMIT_MESSAGE" value="23.01.03 p80" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
